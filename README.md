@@ -29,6 +29,8 @@ leoj-agent-skills/
 npx skills add llj0824/leoj-agent-skills@pr-video-review
 ```
 
+`npx skills add leoj-agent-skills/pr-video-review` does not work with the current `skills` CLI parser. Use the `owner/repo@skill` form above, or the direct GitHub tree URL below.
+
 ### Direct skill path
 
 ```bash
