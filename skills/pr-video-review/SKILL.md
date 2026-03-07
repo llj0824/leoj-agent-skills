@@ -21,7 +21,7 @@ Create reviewer-facing motion proof for frontend pull requests. Record reproduci
 
 1. Ensure the local app is running and the PR already exists.
 2. Record one MP4 per route or state with `scripts/record_scroll_motion.mjs`.
-3. Open the PR in the browser, edit the description, and place the cursor under `## Motion Review`.
+3. Open the PR in the browser, edit the description, and place the cursor under `## Frontend Review`.
 4. Use the PR description editor's `Attach files` button for each MP4.
 5. Wait for each `Uploading ...` placeholder to resolve into a GitHub attachment URL.
 6. Save from that same editor.
@@ -62,7 +62,7 @@ Defaults:
 
 ## Update The PR Description
 
-- Keep the existing PR narrative intact. Add a focused `## Motion Review` section instead of replacing the whole body.
+- Keep the existing PR narrative intact. Add a focused `## Frontend Review` section instead of replacing the whole body.
 - Upload the MP4s through the native GitHub browser editor for the PR description.
 - Put each clip under a short label, such as `Landing page scripted scroll` or `Pricing scripted scroll`.
 - Save from the same browser editor that performed the upload.
@@ -70,7 +70,7 @@ Defaults:
 Use this pattern:
 
 ```md
-## Motion Review
+## Frontend Review
 
 Landing page scripted scroll
 
@@ -94,7 +94,7 @@ Read `references/github-inline-video.md` when:
 ## Verify
 
 - Reload the PR page after saving.
-- Confirm the `Motion Review` section contains embedded video players.
+- Confirm the `Frontend Review` section contains embedded video players.
 - If you inspect the page DOM, GitHub should render `video` elements for the clips.
 - Treat raw URLs in API output as insufficient proof. The rendered page is the source of truth.
 

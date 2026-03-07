@@ -18,7 +18,7 @@ Use this reference when GitHub behaves unexpectedly after adding motion clips to
 
 ## What To Verify
 
-- The `Motion Review` section renders embedded video players.
+- The `Frontend Review` section renders embedded video players.
 - Reloading the PR does not collapse back to plain links.
 - The rendered page, not the raw body text, is the final check.
 
