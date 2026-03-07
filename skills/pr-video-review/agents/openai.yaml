@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Video Review"
+  short_description: "Record frontend motion and embed it in PR descriptions"
+  default_prompt: "Use $pr-video-review to record frontend motion and embed the clips inline in the GitHub PR description."
