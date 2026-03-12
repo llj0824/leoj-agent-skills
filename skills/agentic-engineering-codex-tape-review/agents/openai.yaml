@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic Engineering Codex Tape Review"
+  short_description: "Study recent Codex session logs as a deliberate-practice feedback loop"
+  default_prompt: "Use $agentic-engineering-codex-tape-review to study my recent Codex sessions and surface patterns in task framing, scope creep, complexity, and collaboration efficiency."
