@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic Engineering GitHub Tape Review"
+  short_description: "Study recent GitHub activity as a deliberate-practice feedback loop"
+  default_prompt: "Use $agentic-engineering-github-tape-review to study my recent GitHub activity and surface throughput patterns, bottlenecks, and leverage points."
