@@ -60,25 +60,39 @@ gh api graphql -f query='
   }
 }'
 
-# Per-PR commit timestamps (for commit cadence analysis)
-# For each PR, fetch commit timestamps to compute:
-#   - median gap between commits
-#   - first commit → PR open time
-#   - last commit → merge time
+# Repo default-branch commit history (for repo-level commit rhythm)
+# Use this to compute:
+#   - median gap between landed commits
+#   - p90 gap between landed commits
+#   - longest gap between landed commits
+# This naturally includes normal commits, merge commits, squash merges,
+# rebased landings, and direct pushes that landed on the default branch.
 gh api graphql -f query='
-query($owner:String!, $repo:String!, $number:Int!) {
+query($owner:String!, $repo:String!, $since:GitTimestamp!, $until:GitTimestamp!) {
   repository(owner:$owner, name:$repo) {
-    pullRequest(number:$number) {
-      commits(first:100) {
-        nodes {
-          commit {
-            committedDate
+    defaultBranchRef {
+      name
+      target {
+        ... on Commit {
+          history(first:100, since:$since, until:$until) {
+            totalCount
+            nodes {
+              oid
+              committedDate
+              parents {
+                totalCount
+              }
+            }
           }
         }
       }
     }
   }
 }'
+
+# If you need more than 100 landed commits in the window,
+# paginate the default-branch history rather than switching
+# to per-PR commit timeline queries.
 
 # Review activity
 gh pr list --reviewed-by @me --state all --limit 200 --json number,title,state,createdAt,mergedAt
@@ -102,7 +116,7 @@ Study the activity and report what seems to be happening. Do not give generic pr
 - What kinds of work units seem to create leverage vs drag.
 - Daily contribution counts relative to the >1000/day target.
 - Ratio of agent-attributed vs manually-driven work if distinguishable.
-- Commit cadence within PRs — gap between commits, how quickly PRs open after first commit, how long after last commit until merge.
+- Repo-level rhythm of landed commits — whether repos update continuously or in bursts.
 
 ### Approach
 
@@ -190,24 +204,20 @@ Median per-PR size metrics by repo. Shows how large the work units are and wheth
 
 **What this shows:** PR size is one of the strongest predictors of merge friction. High files/PR often means multi-concern PRs that are hard to review. A repo with high -LOC is doing active simplification or cutover, which is often leverage rather than waste. Comparing Med +LOC vs Med -LOC across repos reveals which repos are growing vs being pruned. If a repo has high churn but also high closed-unmerged PRs, the size alone isn't causing drag — the seam choice is.
 
-#### D. Commit Cadence / Agentic Loop
+#### D. Repo Commit Rhythm
 
-Median timing metrics for the commit-to-merge pipeline, by repo. This is the most diagnostic table for agentic engineering.
+Median timing metrics for landed commits on each repo's default branch. This shows how continuously each repo is being updated, regardless of whether the change landed via direct push, merge commit, squash merge, or rebase.
 
 ```
-┌──────────────────┬────────────────┬──────────────────────┬────────────────────────┐
-│ Repo             │ Med Gap Commit │ Med 1st Commit→Open  │ Med Last Commit→Merge  │
-├──────────────────┼────────────────┼──────────────────────┼────────────────────────┤
-│ org/repo-a       │ 12min          │ 1min                 │ 7min                   │
-│ org/repo-b       │ 10min          │ 1min                 │ 11min                  │
-└──────────────────┴────────────────┴──────────────────────┴────────────────────────┘
+┌──────────────────┬────────────────┬────────────────┬─────────────┬────────────────┐
+│ Repo             │ Commits Landed │ Med Gap Commit │ P90 Gap     │ Longest Gap    │
+├──────────────────┼────────────────┼────────────────┼─────────────┼────────────────┤
+│ org/repo-a       │ 91             │ 11min          │ 74min       │ 310min         │
+│ org/repo-b       │ 37             │ 24min          │ 143min      │ 512min         │
+└──────────────────┴────────────────┴────────────────┴─────────────┴────────────────┘
 ```
 
-**What this shows:** Three intervals that mean different things for agentic workflows:
-
-- **Med Gap Commit** — median time between consecutive commits within a PR. Shows whether work is continuous or interrupted. Short gaps suggest an agent or human in a tight loop. Long gaps suggest context switching, stalls, or waiting on something.
-- **Med 1st Commit→Open** — how quickly work enters the review queue after starting. Near-zero means PRs open immediately (typical of agentic workflows). Longer gaps mean code sits locally before becoming visible.
-- **Med Last Commit→Merge** — decision/review latency after the code is done. This is the "last mile" — if this is large relative to merge time, the bottleneck is approval, not implementation. For self-merging agentic workflows this should be near-zero; if it isn't, something is gating the merge.
+**What this shows:** Repo rhythm reveals whether changes are landing in a smooth stream or in bursts. A short median gap with a long p90 often means "mostly continuous, occasionally stalled." A large longest gap can indicate review queues, batching, time-zone handoffs, or context-switching. Comparing repos shows where merge/landing flow is healthy versus lumpy.
 
 ---
 
