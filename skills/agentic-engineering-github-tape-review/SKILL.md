@@ -18,6 +18,20 @@ Watch your own game tape. Study recent GitHub activity to find what is helping a
 - You are doing deliberate practice on agentic engineering and need concrete evidence to calibrate on.
 - Weekly or biweekly check-in on contribution patterns.
 
+## What We Are Actually Trying To Learn
+
+Do not start by asking for every possible GitHub artifact.
+
+The job is to answer a small set of diagnostic questions:
+
+- Is work flowing or piling up?
+- Which repos are healthy vs churny?
+- Are work units too large or poorly scoped?
+- Is the bottleneck implementation, review, or decision-making?
+- Which exact PRs best illustrate the pattern?
+
+Treat the PR as the default unit of analysis. Commits, reviews, issues, and comments are supporting evidence, not the starting point.
+
 ## Context
 
 - Your current KPI is >1000 contributions/day.
@@ -25,30 +39,82 @@ Watch your own game tape. Study recent GitHub activity to find what is helping a
 - Your GitHub account may reflect work done by coding agents using your credentials, so account-attributed activity is not the same as personally-written code.
 - What matters is understanding throughput, bottlenecks, rework, review/merge load, and how work is being shaped.
 
-## Data Source
+## Default Data Contract
 
-- Your GitHub activity from the last 7-14 days.
-- Default to 14 days if that gives better signal. Do not go further back unless truly necessary.
-- Use the GitHub CLI (`gh`) and GitHub API to pull activity: PRs opened/merged/closed, commits, reviews, issues, comments.
+For the default pass, only gather data that is needed to answer the questions above:
 
-## How To Gather Data
+- contribution totals by day for the selected window
+- PRs created in the window for the selected repos
+- for each PR:
+  - repo
+  - number
+  - title
+  - state
+  - `createdAt`
+  - `mergedAt`
+  - `closedAt`
+  - `additions`
+  - `deletions`
+  - `changedFiles`
+  - `commits.totalCount`
+  - URL
 
-Use `gh` to collect raw activity. Useful starting points:
+This is enough to compute:
+
+- daily contribution chart
+- authored PR volume
+- merged / closed-unmerged / open split
+- active repos
+- median merge time
+- open PR age
+- PR size metrics by repo
+- merged vs closed-unmerged patterns
+
+Do not fetch per-PR commit timestamps, detailed review events, issues, or comment threads unless the user asks for a deeper diagnosis or the first pass reveals a suspicious cluster that needs explanation.
+
+## Time Window
+
+- Default to `7d` for queue pressure and current operating rhythm.
+- Use `14d` only if `7d` is too sparse.
+- Go beyond `14d` only when the user explicitly wants a broader trend or the data is too thin.
+
+## Repo Scope
+
+- Start with the top 1-3 repos that matter for the user.
+- Prefer repo-scoped pulls over one giant cross-GitHub sweep.
+- If the user works across many repos and has not said which matter, focus on the repos with visible PR pressure first.
+
+## Call Budget
+
+Optimize for the fewest useful `gh` calls, not maximum completeness.
+
+Default target:
+
+- 1 call for contribution totals and daily counts
+- 1 PR metadata search call per repo, usually paginating only when a repo exceeds 100 PRs in the window
+
+Rough default budget:
+
+- `1 + sum(ceil(PRs_in_repo / 100))`
+
+Avoid an N+1 pattern where the skill makes one extra API call for every PR.
+
+## Workflow
+
+### 1. Run the cheap first pass
+
+Use one contributions query for the selected window, then one repo-scoped PR metadata query per repo.
+
+Preferred default:
 
 ```bash
-# PRs authored in the last 14 days
-gh pr list --author @me --state all --limit 200 --json number,title,state,createdAt,mergedAt,closedAt,additions,deletions,changedFiles,reviews
-
-# Recent commits across repos
+# 1) Contribution totals and daily counts
 gh api graphql -f query='
-{
-  viewer {
-    contributionsCollection(from: "<14-days-ago-ISO>", to: "<now-ISO>") {
-      totalCommitContributions
-      totalPullRequestContributions
-      totalPullRequestReviewContributions
-      totalIssueContributions
+query($login:String!, $from:DateTime!, $to:DateTime!) {
+  user(login:$login) {
+    contributionsCollection(from:$from, to:$to) {
       contributionCalendar {
+        totalContributions
         weeks {
           contributionDays {
             date
@@ -56,38 +122,63 @@ gh api graphql -f query='
           }
         }
       }
+      totalCommitContributions
+      totalPullRequestContributions
+      totalPullRequestReviewContributions
+      restrictedContributionsCount
     }
   }
 }'
 
-# Per-PR commit timestamps (for commit cadence analysis)
-# For each PR, fetch commit timestamps to compute:
-#   - median gap between commits
-#   - first commit → PR open time
-#   - last commit → merge time
+# 2) Repo-scoped PR metadata
 gh api graphql -f query='
-query($owner:String!, $repo:String!, $number:Int!) {
-  repository(owner:$owner, name:$repo) {
-    pullRequest(number:$number) {
-      commits(first:100) {
-        nodes {
-          commit {
-            committedDate
-          }
-        }
+query($search:String!, $first:Int!, $after:String) {
+  search(query:$search, type:ISSUE, first:$first, after:$after) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      ... on PullRequest {
+        number
+        title
+        state
+        mergedAt
+        closedAt
+        createdAt
+        additions
+        deletions
+        changedFiles
+        commits { totalCount }
+        url
       }
     }
   }
 }'
-
-# Review activity
-gh pr list --reviewed-by @me --state all --limit 200 --json number,title,state,createdAt,mergedAt
-
-# Issues
-gh issue list --author @me --state all --limit 100 --json number,title,state,createdAt,closedAt
 ```
 
-Adapt queries to the user's GitHub username and relevant repos. Pull from multiple repos if the user works across several.
+If the repo set is already known and small, it is acceptable to compress several repo searches into one GraphQL request using aliases. Do this only when it keeps the query readable.
+
+### 2. Build the dashboard from the first pass
+
+Use the cheap first-pass data to produce the main dashboard. This should be the default output path.
+
+### 3. Escalate only when the user asks or the first pass reveals ambiguity
+
+Only go deeper when one of these is true:
+
+- the user explicitly asks for commit cadence, review latency, or PR archaeology
+- a repo has a large closed-unmerged cluster and you need to distinguish failure modes
+- a small set of PRs looks anomalous and needs explanation
+
+Deep-dive targets:
+
+- per-PR commit timestamps
+- review timeline / review requests
+- issue links
+- comment threads
+
+Deep-dive rule:
+
+- fetch supporting detail only for a flagged subset, usually 3-10 PRs
+- never fetch full commit timelines for every PR in the window
 
 ## Analysis
 
@@ -102,7 +193,7 @@ Study the activity and report what seems to be happening. Do not give generic pr
 - What kinds of work units seem to create leverage vs drag.
 - Daily contribution counts relative to the >1000/day target.
 - Ratio of agent-attributed vs manually-driven work if distinguishable.
-- Commit cadence within PRs — gap between commits, how quickly PRs open after first commit, how long after last commit until merge.
+- Commit cadence within PRs only when a deep dive is justified.
 
 ### Approach
 
@@ -110,6 +201,7 @@ Study the activity and report what seems to be happening. Do not give generic pr
 - Let patterns emerge from the evidence.
 - Use exact examples and citations when making claims — link to specific PRs, commits, or issues.
 - State tentative hypotheses, not fake certainty.
+- Prefer sufficiency over exhaustiveness. If one cheap pass answers the question, stop there.
 
 ## Output
 
@@ -190,9 +282,11 @@ Median per-PR size metrics by repo. Shows how large the work units are and wheth
 
 **What this shows:** PR size is one of the strongest predictors of merge friction. High files/PR often means multi-concern PRs that are hard to review. A repo with high -LOC is doing active simplification or cutover, which is often leverage rather than waste. Comparing Med +LOC vs Med -LOC across repos reveals which repos are growing vs being pruned. If a repo has high churn but also high closed-unmerged PRs, the size alone isn't causing drag — the seam choice is.
 
-#### D. Commit Cadence / Agentic Loop
+#### D. Optional Commit Cadence / Agentic Loop
 
-Median timing metrics for the commit-to-merge pipeline, by repo. This is the most diagnostic table for agentic engineering.
+Include this section only when the user asked for deeper diagnosis or when the first pass flagged a small set of PRs that justify extra API calls.
+
+Median timing metrics for the commit-to-merge pipeline, by repo. This is a high-value deep-dive table, not part of the default cheapest path.
 
 ```
 ┌──────────────────┬────────────────┬──────────────────────┬────────────────────────┐
@@ -253,6 +347,7 @@ Describe the current failure mode and the recommended target workflow in prose. 
 ## Failure Recovery
 
 - If `gh` is not authenticated, prompt the user to run `gh auth login`.
-- If the user works across many repos, ask which repos to focus on rather than trying to pull everything.
-- If the GraphQL contributions API returns empty data, fall back to per-repo PR and commit queries.
+- If the user works across many repos, start with the 1-3 repos carrying the most PR pressure rather than trying to pull everything.
+- If the GraphQL contributions API returns empty data, fall back to per-repo PR metadata queries.
 - If the 14-day window has too little data, extend to 21 days and note the adjustment.
+- If a deep-dive GraphQL path is slow or rate-limited, keep the dashboard based on the cheap pass and say which deeper metrics were skipped.
