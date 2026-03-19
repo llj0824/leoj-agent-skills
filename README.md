@@ -29,6 +29,10 @@ leoj-agent-skills/
 │   │   ├── scripts/
 │   │   │   └── record_scroll_motion.mjs
 │   │   └── SKILL.md
+│   ├── deep-dive-html/
+│   │   ├── agents/
+│   │   │   └── openai.yaml
+│   │   └── SKILL.md
 │   ├── recon/
 │   │   ├── agents/
 │   │   │   └── openai.yaml
@@ -48,24 +52,26 @@ leoj-agent-skills/
 ### Install a skill
 
 ```bash
-npx skills add llj0824/leoj-agent-skills@<skill-name>
+npx skills add llj0824/leoj-agent-skills/<skill-name>
 ```
 
 For example:
 
 ```bash
-npx skills add llj0824/leoj-agent-skills@review-pr
-npx skills add llj0824/leoj-agent-skills@recon
-npx skills add llj0824/leoj-agent-skills@pr-video-review
-npx skills add llj0824/leoj-agent-skills@agentic-engineering-github-tape-review
-npx skills add llj0824/leoj-agent-skills@agentic-engineering-codex-tape-review
+npx skills add llj0824/leoj-agent-skills/deep-dive-html
+npx skills add llj0824/leoj-agent-skills/review-pr
+npx skills add llj0824/leoj-agent-skills/recon
+npx skills add llj0824/leoj-agent-skills/pr-video-review
+npx skills add llj0824/leoj-agent-skills/agentic-engineering-github-tape-review
+npx skills add llj0824/leoj-agent-skills/agentic-engineering-codex-tape-review
 ```
 
-`npx skills add leoj-agent-skills/<skill>` does not work with the current `skills` CLI parser. Use the `owner/repo@skill` form above, or the direct GitHub tree URL below.
+Or use the direct GitHub tree URL:
 
 ### Direct skill path
 
 ```bash
+npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/deep-dive-html
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/review-pr
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/recon
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/pr-video-review
@@ -83,6 +89,7 @@ npx skills add llj0824/leoj-agent-skills --list
 
 | Skill | Description |
 | --- | --- |
+| `deep-dive-html` | Polished standalone HTML deep-dive explainers with inline SVG diagrams, dark mode, and print styles. Thesis-first, visual budget, calmer defaults. |
 | `review-pr` | Review a GitHub PR for mergeability, risk, missing tests, and code smells. Produces a severity-ranked verdict (MERGE / BLOCK / NEEDS CHANGES). |
 | `recon` | Understand a repo before touching it. Maps structure, entrypoints, commands, dragons, and outputs a 1-screen mental model. |
 | `agentic-engineering-codex-tape-review` | Study recent Codex session logs as a deliberate-practice feedback loop — surface patterns in task framing, scope creep, complexity, and collaboration efficiency. |

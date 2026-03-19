@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deep Dive HTML"
+  short_description: "Create polished standalone HTML deep-dive explainers"
+  default_prompt: "Use $deep-dive-html to turn this into a static HTML deep-dive with relevant diagrams and strong information design."
