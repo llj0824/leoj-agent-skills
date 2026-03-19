@@ -7,7 +7,9 @@
 ├── skills/
 │   ├── agentic-engineering-codex-tape-review/   deliberate-practice feedback loop from Codex session logs
 │   ├── agentic-engineering-github-tape-review/  deliberate-practice feedback loop from GitHub activity
-│   └── pr-video-review/  reviewer-facing motion clips for GitHub PR descriptions
+│   ├── pr-video-review/                         reviewer-facing motion clips for GitHub PR descriptions
+│   ├── recon/                                   understand a repo before touching it (1-screen mental model)
+│   └── review-pr/                               review a PR for mergeability, risk, and code smells
 ├── README.md             install and usage entrypoint
 └── LICENSE
 ```

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review PR"
+  short_description: "Review a GitHub PR for mergeability, risk, and code smells"
+  default_prompt: "Use $review-pr to review this PR for mergeability, risk, missing tests, and code smells."

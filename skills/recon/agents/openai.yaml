@@ -1,0 +1,4 @@
+interface:
+  display_name: "Recon"
+  short_description: "Understand a repo before touching it"
+  default_prompt: "Use $recon to map this repo's structure, entrypoints, commands, and dragons before making changes."
