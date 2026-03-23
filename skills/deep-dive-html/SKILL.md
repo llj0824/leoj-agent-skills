@@ -9,6 +9,7 @@ description: Create polished standalone HTML deep-dive explainers for research, 
 
 Use this skill when:
 - The output is a technical explanation, investigation, architecture overview, plan, or comparison
+- The job is an operational review, demo-readiness assessment, or implementation-gap assessment that needs a clear current state, gap, and ranked next steps
 - The audience will read it in a browser (shared link, PR artifact, local file)
 - Visuals (diagrams, tables, matrices) would genuinely help understanding
 - The output should feel polished enough to send to a CTO or put in a design review
@@ -42,6 +43,8 @@ Specific path forward. Phased timeline, decision tree, implementation sequence, 
 This section answers: *What do we do about it? In what order? What are the tradeoffs?*
 
 Other structural patterns (investigation, comparison, etc.) are opt-in variants of this arc — they may reweight sections but should still ground the reader in current state first.
+
+For operational reviews, demo-readiness work, and implementation-gap assessments, use the **Current Gap / Ranked List** pattern below as the default shape inside this skill.
 
 ## Default page contract
 
@@ -88,6 +91,7 @@ One self-contained `.html` file:
 |------|------|
 | System deep dive | Explaining how a system works end-to-end |
 | Investigation summary | Reporting findings from a codebase or system audit |
+| Current gap / ranked list | Operational reviews, demo-readiness, implementation-gap assessments, current-vs-target audits |
 | Architecture explainer | Documenting boundaries, ownership, data flow |
 | Product walkthrough | Step-by-step how a feature or workflow operates |
 | Plan / roadmap | Phased delivery, migration, or strategy |
@@ -216,6 +220,32 @@ All patterns are variants of the default State → Intent → Direction arc. The
 2. **Current state** — what exists now (dependency graph, system topology, or evidence snapshot)
 3. **Intent/gap** — what we found vs. what was expected (evidence table, coverage matrix)
 4. **Direction** — ranked findings or recommendations with next steps
+
+### Current Gap / Ranked List
+Use this as the default for operational reviews, demo-readiness plans, and implementation-gap assessments.
+
+Section order:
+1. Thesis or framing line
+2. A short block that explicitly says what the document is for
+3. **Current state** — what already exists and what is already true
+4. **Gap / target state** — what is missing, risky, partially wired, or not yet true
+5. **Ranked list** — the ordered next steps, with gating items first
+6. **Fan-out / workstreams** — what can split in parallel after the gates are cleared
+7. **Dependencies / risks / acceptance criteria** — what must hold for the work to count as done
+
+Use this pattern when the reader needs to decide:
+- what is real now
+- what the real gap is
+- what should happen first
+- what can happen in parallel after the gate
+
+Favor these visuals:
+- current-vs-target diagram for gap framing
+- ranked board or status table near the top half of the page
+- dependency map for sequencing
+- workstream split or fan-out diagram for parallel execution
+
+Keep the ranked list visible early. If the page starts feeling like a broad systems article instead of an execution memo, simplify.
 
 ### System deep dive
 1. Thesis
