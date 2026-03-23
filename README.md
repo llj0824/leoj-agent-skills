@@ -56,22 +56,25 @@ leoj-agent-skills/
 ### Install a skill
 
 ```bash
-npx skills add llj0824/leoj-agent-skills/<skill-name>
+npx skills add llj0824/leoj-agent-skills --skill <skill-name>
 ```
+
+Use `--skill` when installing a single skill from this multi-skill repository.
+The current `skills` CLI does not support `owner/repo/<skill-name>` shorthand for this layout.
 
 For example:
 
 ```bash
-npx skills add llj0824/leoj-agent-skills/deep-dive-html
-npx skills add llj0824/leoj-agent-skills/review-pr
-npx skills add llj0824/leoj-agent-skills/recon
-npx skills add llj0824/leoj-agent-skills/pr-video-review
-npx skills add llj0824/leoj-agent-skills/task-deep-dive-implementation
-npx skills add llj0824/leoj-agent-skills/agentic-engineering-github-tape-review
-npx skills add llj0824/leoj-agent-skills/agentic-engineering-codex-tape-review
+npx skills add llj0824/leoj-agent-skills --skill deep-dive-html
+npx skills add llj0824/leoj-agent-skills --skill review-pr
+npx skills add llj0824/leoj-agent-skills --skill recon
+npx skills add llj0824/leoj-agent-skills --skill pr-video-review
+npx skills add llj0824/leoj-agent-skills --skill task-deep-dive-implementation
+npx skills add llj0824/leoj-agent-skills --skill agentic-engineering-github-tape-review
+npx skills add llj0824/leoj-agent-skills --skill agentic-engineering-codex-tape-review
 ```
 
-Or use the direct GitHub tree URL:
+Or use a direct GitHub tree URL to install a specific skill subdirectory:
 
 ### Direct skill path
 
