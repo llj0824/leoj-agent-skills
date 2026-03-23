@@ -9,7 +9,6 @@
 │   ├── agentic-engineering-github-tape-review/  deliberate-practice feedback loop from GitHub activity
 │   ├── pr-video-review/                         reviewer-facing motion clips for GitHub PR descriptions
 │   ├── deep-dive-html/                          polished standalone HTML explainers with inline SVG
-│   ├── recon/                                   understand a repo before touching it (1-screen mental model)
 │   ├── review-pr/                               review a PR for mergeability, risk, and code smells
 │   └── task-deep-dive-implementation/           investigate, rank options, implement, verify, PR, and worktree cleanup
 ├── README.md             install and usage entrypoint
