@@ -1,5 +1,5 @@
 ---
-name: task-deep-dive-implementation
+name: investigate-and-implement
 description: Understand a coding task's real intent, thoroughly investigate the current state, produce a ranked list of implementation options when tradeoffs exist, choose the recommended path, implement it, verify it, and open or update a PR. Start the work in a dedicated worktree and clean up that worktree after the PR is merged. Use when the user asks for a broad repo change with language like "take a look", "understand what's going on", "propose changes", "ranked list if needed", "go with your recommendation", "implement", or "open a PR when done."
 ---
 

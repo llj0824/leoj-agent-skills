@@ -10,7 +10,7 @@
 │   ├── pr-video-review/                         reviewer-facing motion clips for GitHub PR descriptions
 │   ├── deep-dive-html/                          polished standalone HTML explainers with inline SVG
 │   ├── review-pr/                               review a PR for mergeability, risk, and code smells
-│   └── task-deep-dive-implementation/           investigate, rank options, implement, verify, PR, and worktree cleanup
+│   └── investigate-and-implement/               investigate, rank options, implement, verify, PR, and worktree cleanup
 ├── README.md             install and usage entrypoint
 └── LICENSE
 ```
