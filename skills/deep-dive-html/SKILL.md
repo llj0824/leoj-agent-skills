@@ -19,25 +19,52 @@ Do NOT use this when:
 - The content is ephemeral (a quick answer in chat is fine)
 - The user just wants data, not a narrative
 
+## Default narrative arc: State → Intent → Direction
+
+Every deep dive follows this arc by default. The reader cannot understand intent without ground truth, and cannot evaluate direction without intent.
+
+### 1. Current State (always first, always biggest)
+
+The "you are here" map. This is the ground truth the reader needs before anything else makes sense. Lead with a visual — topology, dependency graph, data flow, or ownership matrix — then annotate it with prose.
+
+This section answers: *What exists right now? What are the boundaries, relationships, and key metrics?*
+
+### 2. Intent / Gap
+
+Why are we looking at this? What's the delta between current and desired? Show it visually: before/after paired diagrams, gap table, coverage matrix showing what's missing, or a diff-style overlay.
+
+This section answers: *What's the motivation? What's broken, missing, or changing?*
+
+### 3. Direction
+
+Specific path forward. Phased timeline, decision tree, implementation sequence, ranked recommendations. This is where options and tradeoffs live.
+
+This section answers: *What do we do about it? In what order? What are the tradeoffs?*
+
+Other structural patterns (investigation, comparison, etc.) are opt-in variants of this arc — they may reweight sections but should still ground the reader in current state first.
+
 ## Default page contract
 
 Unless the user explicitly wants something more editorial or visually expressive, default to:
 - A single main content column
 - A lightweight top-of-page TOC for multi-section pieces
 - One direct hero with thesis and lede
-- A current-state, ranked-findings, or priorities block before deep architecture sections when the artifact supports a decision
+- **Visual-first sections**: every major section leads with a diagram, table, or visual — prose annotates the visual, not the other way around
 - 3-5 focused sections after the opening
-- 1-3 diagrams total for most pieces
+- 2-4 diagrams total for most pieces (more than before — visuals are the spine now)
 - Tables for status, comparisons, or coverage when they scan better than cards
 - One primary surface style and at most one secondary emphasis style
+- Every scroll-viewport should have at least one visual element
 
 Avoid by default:
 - Sticky sidebars for short documents
 - Decorative side rails
+- Text-first sections where a diagram could lead instead
 - Architecture-first openings when the real task is prioritization or readiness
 - Glassmorphism, ornamental gradients, or concept-page styling
 - Too many card types, grid systems, or visual motifs in one page
 - Diagrams that repeat headings instead of answering a reader question
+- Filler diagrams that exist only to meet a visual quota — quality over quantity
 
 When in doubt, choose the calmer, more memo-like option.
 
@@ -76,22 +103,23 @@ Read only the artifacts needed to explain the task accurately: repo files, notes
 
 If decision-making, lead with:
 - Thesis
-- Current gap or recommendation
+- Current state visual (ground truth first)
+- Gap or recommendation
 - Ranked findings, priorities, or status
 
-Only move into deeper architecture after the reader understands what matters.
+Only move into deeper architecture after the reader understands what exists now and what matters.
 
-If reference, still open with a concise thesis and orientation block before deeper sections.
+If reference, still open with a concise thesis, a current-state visual, and an orientation block before deeper sections.
 
 ### 4. Plan the narrative structure
 
-Good technical deep dives follow this arc:
+Good technical deep dives follow the State → Intent → Direction arc:
 1. **TOC** at the top (with anchor links) when 3+ sections
 2. **Lede / thesis** — one paragraph that tells the reader what this is about and why it matters
-3. **Current gap, ranked board, or recommendation block** when relevant
-4. **High-level view** — only after the decision frame is established
-5. **3-5 focused sections** — each with a clear heading, a visual if it helps, and concise prose
-6. **Diagrams beside the claims they support** — never orphaned at the bottom
+3. **Current State** — lead with a visual (topology, dependency graph, data flow). Prose annotates the visual. This is the largest section.
+4. **Intent / Gap** — before/after paired diagram, gap table, or coverage matrix. What's the delta between now and desired?
+5. **Direction** — ranked recommendations, phased timeline, or decision tree. Each option with tradeoffs.
+6. **Supporting sections** — each leads with a visual, followed by concise prose that annotates it
 7. **Closing** — ranked takeaways, acceptance criteria, or next steps
 
 ### 5. Choose visualizations
@@ -101,31 +129,41 @@ Use the lightest visualization that makes the point clearer than prose alone.
 | Visualization | Use when |
 |--------------|----------|
 | Topology / boundary diagram | Reader needs to know what lives where |
+| Dependency / relationship graph | Show what depends on what, what breaks if X changes |
+| Before/after paired diagrams | Current vs. target state side-by-side — ideal for Intent/Gap sections |
 | Sequence / swimlane | Time order matters (request flows, pipelines) |
 | State / loop diagram | System revisits components or branches |
 | Status or comparison table | Reader needs to scan multiple items quickly |
+| Coverage / gap matrix | What exists vs. what's needed (heatmap-style) |
 | Ownership matrix | Many-to-many relationships (components, teams) |
 | Ranked board / scorecards | Order matters more than topology |
 | Timeline | Phased plans, incidents, rollouts |
 
 Prefer a table over a card grid when the content is mostly labels, status, and short explanations.
 
+**Section structure rule:** Major sections lead with a visual, then prose annotates it. The visual is the primary information vehicle; text explains what the visual shows and why it matters.
+
 **Anti-patterns:**
+- Do not write a section as prose-first with an optional diagram at the end
 - Do not add visuals that restate a heading
 - Do not use decorative charts with no underlying data
 - Do not turn every paragraph into a card
 - Do not repeat the same visualization type throughout
 - Do not spend the opening screen on architecture if the real job is priorities or readiness
 - Do not use many equal-weight card grids where a table would scan faster
+- Do not add filler diagrams just to have visuals — if no diagram genuinely helps, use a table or skip
 
 ### 6. Apply a visual budget
 
 For most artifacts:
 - 1 hero block
-- 1 opening status or priorities block
-- 1 primary figure above or near the fold
-- 0-2 additional figures in the body
+- 1 current-state visual (the anchor diagram — this is the most important visual)
+- 1 intent/gap visual (before/after, gap table, or coverage matrix)
+- 1 direction visual (timeline, decision tree, or ranked board)
+- 0-2 additional supporting figures in the body
 - 0-2 tables when they improve scan speed
+
+The State → Intent → Direction arc naturally produces 3 primary visuals. Additional figures should earn their place.
 
 If the page starts accumulating many card species, competing grids, or multiple ornamental motifs, simplify. Prefer one strong figure and one strong table over five decorative cards.
 
@@ -171,33 +209,31 @@ At minimum:
 
 ## Structural Patterns
 
+All patterns are variants of the default State → Intent → Direction arc. They reweight sections but always ground the reader in current state first.
+
 ### Investigation / research
 1. Lede and thesis
-2. Current finding or proof block
-3. Evidence table
-4. High-level figure only if it clarifies the findings
-5. Ranked findings or recommendations
+2. **Current state** — what exists now (dependency graph, system topology, or evidence snapshot)
+3. **Intent/gap** — what we found vs. what was expected (evidence table, coverage matrix)
+4. **Direction** — ranked findings or recommendations with next steps
 
 ### System deep dive
 1. Thesis
-2. Topology diagram
-3. Runtime lanes or sequence view
-4. Ownership or schema visuals
-5. Failure-path callouts
+2. **Current state** — topology diagram + dependency graph (lead with these)
+3. **Intent/gap** — runtime lanes or sequence view showing where things break or are insufficient
+4. **Direction** — ownership or schema visuals, failure-path callouts, remediation plan
 
 ### Plan / roadmap
 1. Concise thesis
-2. Current-vs-target or gap block
-3. Ranked work board
-4. Milestone or dependency visualization
-5. Success criteria
+2. **Current state** — what exists now (before diagram)
+3. **Intent/gap** — current-vs-target paired diagrams, gap table
+4. **Direction** — ranked work board, milestone/dependency visualization, success criteria
 
 ### Technical comparison
 1. Explicit winner or tradeoff thesis
-2. Comparison table near the top
-3. 2-4 focused dimensions
-4. Supporting figures only where visual evidence helps
-5. Closing recommendation
+2. **Current state** — what we have now and why we're evaluating alternatives
+3. **Intent/gap** — comparison table near the top, 2-4 focused dimensions
+4. **Direction** — closing recommendation with tradeoffs visualized
 
 ## SVG Diagram Guidelines
 
@@ -217,8 +253,9 @@ Deliver a static HTML artifact that:
 - Looks like a polished technical company post
 - Reads like a clear internal deep dive rather than a marketing page
 - Makes the main thesis understandable from the first screen
-- Puts current gap, priorities, or recommendations near the top when relevant
-- Uses diagrams and visualizations only when they materially clarify the explanation
+- Grounds the reader in current state before intent or direction
+- Leads major sections with visuals, using prose to annotate
+- Uses before/after paired diagrams and dependency graphs where they clarify state vs. intent
 - Uses tables when they improve scan speed over cards
 - Is clear enough to skim in under 30 seconds
 - Is self-contained enough to keep as `docs/*.html` or delete without cleanup
