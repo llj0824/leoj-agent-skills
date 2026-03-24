@@ -76,8 +76,8 @@ When in doubt, choose the calmer, more memo-like option.
 One self-contained `.html` file:
 - Inline CSS (no external stylesheets)
 - Inline SVG for all diagrams (no external images unless user provides URLs)
-- CSS variables for all colors (including SVG fills) so dark mode works
-- Dark mode via `prefers-color-scheme: dark`
+- CSS variables for all colors (including SVG fills) so theme changes stay consistent
+- Dark mode via `prefers-color-scheme: dark` only when it is fully themed and verified; prefer a stable light theme over broken dark mode
 - Print styles via `@media print`
 - Minimal or zero JavaScript (smooth-scroll TOC is the exception)
 - Opens cleanly via `file://` protocol
@@ -191,6 +191,16 @@ If the page starts accumulating many card species, competing grids, or multiple 
 - Hardcoded SVG colors when CSS variables will do
 - Many equal-weight modules before the core thesis lands
 
+**Theme safety rules:**
+- Never hardcode body-copy, table-copy, or SVG-label colors to black or very dark values unless the page is permanently light-themed.
+- If you ship dark mode, define every semantic token in both themes: page background, alternate surface, card surface, primary text, secondary text, muted text, borders, code background, and diagram label colors.
+- Use semantic variables such as `--ink`, `--ink-light`, `--ink-muted`, `--bg`, `--bg-alt`, `--bg-card`, and reuse them everywhere, including inline SVG `fill` and `stroke`.
+- Treat muted text as real content, not decorative chrome. It still needs to be comfortably readable in dark mode.
+- Sanity-check every hex token. Invalid color values silently produce unreadable fallbacks.
+
+**Dark mode failure mode to avoid:**
+- A broken dark theme is worse than no dark theme. If computed styles or SVG labels become low-contrast, remove or simplify the dark-mode override before shipping.
+
 ### 8. Add metadata
 
 Include in the artifact:
@@ -208,8 +218,15 @@ At minimum:
 - [ ] Diagrams are legible without zooming
 - [ ] Tables or ranked boards scan quickly
 - [ ] Page doesn't feel like blocks of text or like a design exercise
-- [ ] Dark mode looks correct
+- [ ] If dark mode exists, body text, muted text, tables, code, callouts, and SVG labels all remain readable
+- [ ] No invalid CSS color tokens or broken variable references exist
 - [ ] No placeholder text remains
+
+**Color verification checklist:**
+- [ ] Review the page in both light mode and dark mode, not just one
+- [ ] Specifically inspect secondary copy, table cells, figure captions, TOC links, code blocks, and SVG annotation text
+- [ ] Ensure no critical text is relying on browser fallback colors
+- [ ] If any dark-surface text feels even slightly ambiguous, increase contrast instead of trying to preserve a delicate palette
 
 ## Structural Patterns
 
