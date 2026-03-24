@@ -21,6 +21,14 @@ leoj-agent-skills/
 │   │   │   ├── agentic-engineering-github-tape-review-output.tape
 │   │   │   └── agentic-engineering-github-tape-review-output.txt
 │   │   └── SKILL.md
+│   ├── cloudflare-deploy-html/
+│   │   ├── agents/
+│   │   │   └── openai.yaml
+│   │   ├── references/
+│   │   │   └── cloudflare-pages-notes.md
+│   │   ├── scripts/
+│   │   │   └── cloudflare_deploy_html.mjs
+│   │   └── SKILL.md
 │   ├── pr-video-review/
 │   │   ├── agents/
 │   │   │   └── openai.yaml
@@ -65,6 +73,7 @@ npx skills add llj0824/leoj-agent-skills --skill deep-dive-html
 npx skills add llj0824/leoj-agent-skills --skill review-pr
 npx skills add llj0824/leoj-agent-skills --skill pr-video-review
 npx skills add llj0824/leoj-agent-skills --skill investigate-and-implement
+npx skills add llj0824/leoj-agent-skills --skill cloudflare-deploy-html
 npx skills add llj0824/leoj-agent-skills --skill agentic-engineering-github-tape-review
 npx skills add llj0824/leoj-agent-skills --skill agentic-engineering-codex-tape-review
 ```
@@ -78,6 +87,7 @@ npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/dee
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/review-pr
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/pr-video-review
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/investigate-and-implement
+npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/cloudflare-deploy-html
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/agentic-engineering-github-tape-review
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/agentic-engineering-codex-tape-review
 ```
@@ -95,6 +105,7 @@ npx skills add llj0824/leoj-agent-skills --list
 | `deep-dive-html` | Polished standalone HTML deep-dive explainers with inline SVG diagrams, dark mode, and print styles. Thesis-first, visual budget, calmer defaults. |
 | `review-pr` | Review a GitHub PR for mergeability, risk, missing tests, and code smells. Produces a severity-ranked verdict (MERGE / BLOCK / NEEDS CHANGES). |
 | `investigate-and-implement` | Understand task intent, investigate the current state deeply, rank options when needed, implement the recommended path, verify it, open a PR, and clean up the task worktree after merge. |
+| `cloudflare-deploy-html` | Publish a standalone HTML file or HTML directory to a Cloudflare Pages project under a subpath, with optional shared-password protection. |
 | `agentic-engineering-codex-tape-review` | Study recent Codex session logs as a deliberate-practice feedback loop — surface patterns in task framing, scope creep, complexity, and collaboration efficiency. |
 | `agentic-engineering-github-tape-review` | Study recent GitHub activity as a deliberate-practice feedback loop — surface throughput patterns, bottlenecks, rework, and leverage points. |
 | `pr-video-review` | Record reproducible frontend motion clips and embed them inline in GitHub PR descriptions so reviewers can inspect animated UI behavior directly in the PR body. |

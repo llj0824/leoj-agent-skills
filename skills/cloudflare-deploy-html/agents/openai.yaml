@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cloudflare Deploy HTML"
+  short_description: "Deploy local HTML artifacts to Cloudflare Pages subpaths"
+  default_prompt: "Use $cloudflare-deploy-html to publish a local HTML artifact or directory to Cloudflare Pages under a subpath, and add shared-password protection if needed."
