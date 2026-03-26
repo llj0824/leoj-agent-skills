@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "thesis",
+    "state_intent_direction",
+    "visual_usefulness",
+    "scanability",
+    "self_contained",
+    "overall_pass",
+    "notes"
+  ],
+  "properties": {
+    "thesis": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "state_intent_direction": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "visual_usefulness": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "scanability": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "self_contained": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "overall_pass": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 5
+    }
+  }
+}
