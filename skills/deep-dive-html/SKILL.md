@@ -187,6 +187,59 @@ If the page starts accumulating many card species, competing grids, or multiple 
 - Hardcoded SVG colors when CSS variables will do
 - Many equal-weight modules before the core thesis lands
 
+**Readability guardrail snippet:**
+
+Use this when you do not already have a stronger, fully verified theme. Too many artifacts end up with dark surfaces paired with dark text, or light surfaces paired with light text. Start with explicit semantic tokens, wire them through the whole page, and only soften the palette after the rendered result is clearly readable.
+
+```css
+:root {
+  --bg: #f6f3ee;
+  --bg-card: #fffdf8;
+  --ink: #181512;
+  --ink-soft: #453f37;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12100d;
+    --bg-card: #201c17;
+    --ink: #f5efe6;
+    --ink-soft: #ddd3c7;
+  }
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body,
+table,
+th,
+td,
+button,
+input,
+textarea,
+select {
+  color: var(--ink);
+}
+
+.lede,
+.secondary,
+.muted,
+figcaption,
+.toc a {
+  color: var(--ink-soft);
+}
+
+code,
+pre,
+.card,
+table {
+  background: var(--bg-card);
+}
+```
 ### 8. Add metadata
 
 Include in the artifact:
