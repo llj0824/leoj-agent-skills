@@ -7,6 +7,7 @@
 ├── skills/
 │   ├── agentic-engineering-codex-tape-review/   deliberate-practice feedback loop from Codex session logs
 │   ├── agentic-engineering-github-tape-review/  deliberate-practice feedback loop from GitHub activity
+│   ├── eval-skills/                             design and run lightweight evals for Codex skills
 │   ├── pr-video-review/                         reviewer-facing motion clips for GitHub PR descriptions
 │   ├── deep-dive-html/                          polished standalone HTML explainers with inline SVG
 │   ├── recon/                                   understand a repo before touching it (1-screen mental model)
