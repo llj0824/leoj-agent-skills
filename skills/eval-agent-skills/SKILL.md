@@ -1,5 +1,5 @@
 ---
-name: eval-skills
+name: eval-agent-skills
 description: Design and run lightweight evals for Codex skills using small prompt sets, deterministic trace checks, and rubric-based grading. Use when you want to make a skill more reliable, catch regressions, or choose which skills to evaluate first.
 license: MIT
 metadata:

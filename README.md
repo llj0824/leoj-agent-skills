@@ -21,7 +21,7 @@ leoj-agent-skills/
 │   │   │   ├── agentic-engineering-github-tape-review-output.tape
 │   │   │   └── agentic-engineering-github-tape-review-output.txt
 │   │   └── SKILL.md
-│   ├── eval-skills/
+│   ├── eval-agent-skills/
 │   │   ├── agents/
 │   │   │   └── openai.yaml
 │   │   └── SKILL.md
@@ -74,7 +74,7 @@ npx skills add llj0824/leoj-agent-skills --skill review-pr
 npx skills add llj0824/leoj-agent-skills --skill recon
 npx skills add llj0824/leoj-agent-skills --skill pr-video-review
 npx skills add llj0824/leoj-agent-skills --skill task-deep-dive-implementation
-npx skills add llj0824/leoj-agent-skills --skill eval-skills
+npx skills add llj0824/leoj-agent-skills --skill eval-agent-skills
 npx skills add llj0824/leoj-agent-skills --skill agentic-engineering-github-tape-review
 npx skills add llj0824/leoj-agent-skills --skill agentic-engineering-codex-tape-review
 ```
@@ -89,7 +89,7 @@ npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/rev
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/recon
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/pr-video-review
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/task-deep-dive-implementation
-npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/eval-skills
+npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/eval-agent-skills
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/agentic-engineering-github-tape-review
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/agentic-engineering-codex-tape-review
 ```
@@ -108,7 +108,7 @@ npx skills add llj0824/leoj-agent-skills --list
 | `review-pr` | Review a GitHub PR for mergeability, risk, missing tests, and code smells. Produces a severity-ranked verdict (MERGE / BLOCK / NEEDS CHANGES). |
 | `recon` | Understand a repo before touching it. Maps structure, entrypoints, commands, dragons, and outputs a 1-screen mental model. |
 | `task-deep-dive-implementation` | Understand task intent, investigate the current state deeply, rank options when needed, implement the recommended path, verify it, open a PR, and clean up the task worktree after merge. |
-| `eval-skills` | Design and run lightweight evals for Codex skills using prompt sets, deterministic trace checks, and rubric-based grading. |
+| `eval-agent-skills` | Design and run lightweight evals for Codex skills using prompt sets, deterministic trace checks, and rubric-based grading. |
 | `agentic-engineering-codex-tape-review` | Study recent Codex session logs as a deliberate-practice feedback loop — surface patterns in task framing, scope creep, complexity, and collaboration efficiency. |
 | `agentic-engineering-github-tape-review` | Study recent GitHub activity as a deliberate-practice feedback loop — surface throughput patterns, bottlenecks, rework, and leverage points. |
 | `pr-video-review` | Record reproducible frontend motion clips and embed them inline in GitHub PR descriptions so reviewers can inspect animated UI behavior directly in the PR body. |
