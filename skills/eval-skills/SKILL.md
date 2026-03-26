@@ -13,6 +13,9 @@ Evaluate skills the same way you would evaluate any other agent behavior: define
 
 This skill is especially useful when a skill feels valuable but brittle, or when changes to `SKILL.md`, supporting scripts, or trigger descriptions keep causing regressions.
 
+Reference:
+- OpenAI, [Testing Agent Skills Systematically with Evals](https://developers.openai.com/blog/eval-skills)
+
 ## Use This Skill When
 
 - You want to make an existing skill more reliable before wider use.
@@ -42,36 +45,29 @@ If you have real usage telemetry, use it. If you do not, rank candidates by:
 - how easy it is to define a stable definition of done
 - how easy it is to observe success from files, commands, or structured output
 
-For this repo, a strong starting order is:
+In practice, the best first eval targets usually look like this:
 
-1. `deep-dive-html`
-   - Broad applicability and a crisp output contract: one self-contained HTML artifact with a specific narrative shape.
-   - Easy deterministic checks: output file exists, contains title/TOC/sections, opens locally, includes inline CSS/SVG.
-   - Good rubric fit: thesis clarity, State → Intent → Direction flow, visual usefulness, scanability.
+1. Artifact-producing skills
+   - Strong first targets because they often have a crisp contract such as "write one HTML file," "produce one report," or "generate one config artifact."
+   - Easy deterministic checks: output exists, expected sections exist, artifact is self-contained, required formats are present.
 
-2. `review-pr`
-   - High reuse potential and strongly structured output.
-   - Easy deterministic checks: verdict present, required sections present, line references included, CI status included.
-   - Good rubric fit: severity calibration, catches real blockers, avoids over-nitpicking, proposes missing tests.
+2. Structured review or analysis skills
+   - Good eval targets when the output shape is tightly constrained, such as verdicts, required sections, or cited findings.
+   - Good mix of deterministic checks for structure and rubric checks for severity calibration or signal-to-noise.
 
-3. `pr-video-review`
-   - Narrow enough to evaluate well, with concrete artifacts.
-   - Easy deterministic checks when the environment is available: MP4 exists, PR body contains the expected section, uploaded asset URLs appear.
-   - Harder than the top two only because GitHub UI state and local app state add setup cost.
+3. Narrow workflow skills with observable side effects
+   - Useful when success can be observed from created files, changed PR text, uploaded media, or specific commands.
+   - More setup-heavy than the first two categories, but still practical if the environment is reproducible.
 
-4. `investigate-and-implement`
-   - Very valuable, but too broad to evaluate well as one monolith.
-   - Evaluate it by slicing the workflow: investigation quality, options quality, verification behavior, and PR narrative quality.
+4. Broad end-to-end implementation skills
+   - Usually not the best first target because they hide many sub-problems behind one large score.
+   - Evaluate them by slices: investigation quality, option quality, verification quality, and handoff quality.
 
-5. `cloudflare-deploy-html`
-   - Deterministic when credentials and a Pages project already exist.
-   - Better as an environment-backed smoke test than as the first general-purpose skill eval.
+5. High-variance introspection or retrospective skills
+   - Often poor first eval targets because the input data is personal, noisy, and hard to fixture cleanly.
+   - Save these until you have a stable eval pattern on simpler, more observable skills.
 
-6. `agentic-engineering-github-tape-review`
-7. `agentic-engineering-codex-tape-review`
-   - Valuable skills, but poor first eval targets because the source data is personal, high-variance, and hard to fixture cleanly.
-
-If you want the first wave only, start with `deep-dive-html` and `review-pr`.
+If you need one rule of thumb: start with the skill whose success is easiest to observe from artifacts or structure, not the skill that feels most important in the abstract.
 
 ## Workflow
 
@@ -139,9 +135,9 @@ Keep the rubric small. Prefer 3 to 6 checks that map directly to the skill contr
 
 Examples:
 
-- `deep-dive-html`: thesis clarity, narrative arc, visual usefulness, scanability
-- `review-pr`: blocker detection, severity calibration, missing-test quality, signal-to-noise
-- `investigate-and-implement`: investigation depth, option quality, recommendation clarity, verification quality
+- artifact-producing skill: thesis clarity, narrative arc, visual usefulness, scanability
+- structured review skill: blocker detection, severity calibration, missing-test quality, signal-to-noise
+- broad implementation skill: investigation depth, option quality, recommendation clarity, verification quality
 
 ### 6. Grow the dataset from real misses
 
@@ -153,9 +149,7 @@ Whenever a run surprises you:
 
 The prompt set should become a living record of what the skill must continue to get right.
 
-## Recommended First Eval Designs For This Repo
-
-### `deep-dive-html`
+## Example Eval Design: Artifact-Producing Skill
 
 Definition of done:
 
@@ -166,7 +160,7 @@ Definition of done:
 
 Prompt set ideas:
 
-- explicit: "Use $deep-dive-html to turn this architecture audit into a standalone HTML deep dive"
+- explicit: "Use this HTML report skill to turn this architecture audit into a standalone HTML deep dive"
 - implicit: "Create a polished single-file HTML explainer for this migration plan"
 - noisy: "Turn this repo investigation into something I can send to the CTO"
 - negative: "Summarize this diff in markdown for a PR comment"
@@ -186,7 +180,7 @@ Rubric checks:
 - `visuals_help`
 - `easy_to_scan`
 
-### `review-pr`
+## Example Eval Design: Structured Review Skill
 
 Definition of done:
 
@@ -196,7 +190,7 @@ Definition of done:
 
 Prompt set ideas:
 
-- explicit: "Use $review-pr to review PR #123"
+- explicit: "Use this PR review skill to review PR #123"
 - implicit: "Should this PR merge? Focus on blockers and missing tests"
 - negative: "Summarize what changed in this PR"
 
@@ -214,7 +208,7 @@ Rubric checks:
 - `test_gap_quality`
 - `avoids_low_value_nits`
 
-### `investigate-and-implement`
+## Example Eval Design: Broad Implementation Skill
 
 Do not start with a single giant end-to-end score.
 
