@@ -1,0 +1,4 @@
+interface:
+  display_name: "Eval Skills"
+  short_description: "Design and run lightweight evals for Codex skills"
+  default_prompt: "Use $eval-skills to choose which existing skill to evaluate first, define a small prompt set, add deterministic checks, and layer in rubric-based grading only where it adds signal."
