@@ -44,6 +44,14 @@ leoj-agent-skills/
 │   ├── deep-dive-html/
 │   │   ├── agents/
 │   │   │   └── openai.yaml
+│   │   ├── evals/
+│   │   │   ├── fixtures/
+│   │   │   ├── artifacts/
+│   │   │   ├── results/
+│   │   │   ├── prompts.csv
+│   │   │   ├── rubric.schema.json
+│   │   │   ├── run-evals.mjs
+│   │   │   └── README.md
 │   │   └── SKILL.md
 │   ├── investigate-and-implement/
 │   │   ├── agents/

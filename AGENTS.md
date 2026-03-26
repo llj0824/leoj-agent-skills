@@ -10,7 +10,7 @@
 │   ├── cloudflare-deploy-html/                  publish HTML artifacts to Cloudflare Pages subpaths
 │   ├── eval-skills/                             design and run lightweight evals for Codex skills
 │   ├── pr-video-review/                         reviewer-facing motion clips for GitHub PR descriptions
-│   ├── deep-dive-html/                          polished standalone HTML explainers with inline SVG
+│   ├── deep-dive-html/                          polished standalone HTML explainers with inline SVG and fixture-based evals
 │   ├── review-pr/                               review a PR for mergeability, risk, and code smells
 │   └── investigate-and-implement/               investigate, rank options, implement, verify, PR, and worktree cleanup
 ├── README.md             install and usage entrypoint
