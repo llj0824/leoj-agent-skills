@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task Deep Dive"
+  short_description: "Legacy alias for investigate-and-implement."
+  default_prompt: "Understand the task intent, start a dedicated worktree, investigate the current state thoroughly, give a ranked list if needed, choose the best option, implement it, verify it, open or update the PR, and clean up the worktree after the PR is merged."
