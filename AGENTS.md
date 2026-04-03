@@ -12,6 +12,7 @@
 │   ├── deep-dive-html/                          polished standalone HTML explainers with inline SVG
 │   ├── review-pr/                               review a PR for mergeability, risk, and code smells
 │   ├── investigate-and-implement/               investigate, rank options, implement, verify, PR, and worktree cleanup
+│   ├── orchestrate-agents-to-prs/               decompose task, delegate to agents, drive PRs to merge-ready
 │   └── task-deep-dive-implementation/           legacy compatibility alias for investigate-and-implement
 ├── README.md             install and usage entrypoint
 └── LICENSE

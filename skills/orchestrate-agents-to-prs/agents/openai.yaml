@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate Agents to PRs"
+  short_description: "Decompose a task, delegate to agents, coordinate PRs, and drive to merge-ready."
+  default_prompt: "Understand the full task intent, decompose into parallelizable units, delegate to agents with full context, track progress with a status artifact, coordinate PRs, drive review cycles, and keep going until all PRs are merge-ready."
