@@ -1,0 +1,269 @@
+❯ /agentic-engineering-github-tape-review
+
+⏺ I'll gather your GitHub activity data for the last 14 days. Let me pull everything in parallel.
+
+⏺ Bash(date -u +%Y-%m-%dT%H:%M:%SZ)
+⎿  2026-03-12T09:25:36Z
+
+⏺ Bash(gh api graphql -f query='
+    {…)
+⎿  {
+     "data": {
+       "viewer": {
+   … +52 lines (ctrl+o to expand)
+
+⏺ Bash(# Get all repos the user has pushed to recently
+    gh api graphql -f query='…)
+⎿  acme-dev/agent-skills
+   acme-dev/private-notes
+   acme-dev/health-newsfeed
+   … +13 lines (ctrl+o to expand)
+
+⏺ Bash(# Get PR reviews authored
+    gh api graphql -f query='…)
+⎿  {
+     "data": {
+       "search": {
+   … +45 lines (ctrl+o to expand)
+
+⏺ Bash(cat ~/.claude/projects/session/tool-results/cached-pr-stats.txt | pyt…)
+⎿  teammate/podcast-to-book: 22 total, 19 merged, 3 closed, 0 open
+     Med files/PR: 6.0, Med +LOC: 276.0, Med -LOC: 91.0, Med commits: 2.5
+     Med merge time: 10min, Max: 2217min
+   … +24 lines (ctrl+o to expand)
+
+⏺ Bash(# Get default branch commit rhythm for the most active repos
+    # First: acme-org/main-app…)
+⎿  {"data":{"repository":{"defaultBranchRef":{"name":"main","target":{"history":{"totalCount":120,"nodes":[{"oid":"abcdef1...","committedDate":"2026-03-11T14:07:19Z","parents":{"totalCount":1}},{"oid":"abcdef2...","committedDate":"2026-03-11T13:56:11Z","parents":{"totalCount":1}},{"oid":"abcdef3...","comm…
+   … +88 lines (ctrl+o to expand)
+
+⏺ Bash(# Compute commit rhythm for acme-org/main-app
+    cat <<'PYEOF' | python3…)
+⎿  acme-org/main-app:
+     Total commits on default branch (in window): 120
+     Commits fetched: 100
+   … +4 lines (ctrl+o to expand)
+
+⏺ Bash(# Get commit rhythm for acme-dev/health-newsfeed
+    gh api graphql -f query='…)
+⎿  {
+     "data": {
+       "repository": {
+   … +46 lines (ctrl+o to expand)
+
+⏺ Bash(# Compute commit rhythm for podcast-to-book and health-newsfeed
+    cat <<'PYEOF' | python3…)
+⎿  teammate/podcast-to-book:
+     Commits landed: 72
+     Median gap: 7min
+   … +8 lines (ctrl+o to expand)
+
+⏺ Bash(# Get some specific PR details for the closed-unmerged ones in main-app (the 13 closed PRs)
+    cat ~/.claude/projects/session/tool-results/cached-pr-details.txt…)
+⎿  #104: feat(onboarding): adopt function health questionnaire
+     Created: 2026-03-09T08:37:20Z, Closed: 2026-03-09T09:39:35Z
+     +1465/-150, 17 files, 2 commits
+   … +35 lines (ctrl+o to expand)
+
+⏺ Bash(# Get the full PR data to compute merge times and detailed stats
+    cat ~/.claude/projects/session/tool-results/cached-merge-stats.txt…)
+⎿  Total visible authored PRs: 100
+   Merged: 78
+   Closed unmerged: 17
+   … +29 lines (ctrl+o to expand)
+
+⏺ Bash(# Now get the podcast-to-book closed-unmerged PRs
+    cat ~/.claude/projects/session/tool-results/cached-closed-prs.txt…)
+⎿  #11: docs(methodology): agentic transcript-to-booklet (no set workflow)
+     Created: 2026-03-07T08:48:51Z, Closed: 2026-03-11T15:49:05Z
+     +249/-0, 2 files
+   … +12 lines (ctrl+o to expand)
+
+⏺ Bash(# Verify total contribution count including restricted
+    # The contribution calendar showed daily counts, let me sum them…)
+⎿  Total contributions: 616
+   Days: 15
+   Avg/day: 41.1
+   … +3 lines (ctrl+o to expand)
+
+⏺ Now I have all the data I need. Let me compile the full analysis.
+
+---
+GitHub Activity Analysis: Feb 26 – Mar 12, 2026
+
+15 days analyzed · 7 repos with visible PRs
+
+---
+Part 1: Dashboard
+
+A. Window & Topline Numbers
+
+┌─────────────────────────────────┬───────┐
+│ Metric                          │ Count │
+├─────────────────────────────────┼───────┤
+│ Total contributions             │   616 │
+│ Restricted contributions        │   523 │
+│ Visible authored PRs created    │   100 │
+│ Visible authored PRs merged     │    78 │
+│ Closed unmerged                 │    17 │
+│ Still open                      │     5 │
+│ PR reviews authored             │     2 │
+│ Active repos                    │     7 │
+└─────────────────────────────────┴───────┘
+
+Feb 26: ████████████████████           20
+Feb 27: █████████████████████████      25
+Feb 28: ██████████████████████████████████████████████  46
+Mar 01: █████████████████████████████  29
+Mar 02: ██████████████████████████████████████████████████████████  58
+Mar 03: █████████████████████████████████████  37
+Mar 04: ██████████████████████████████████████████████████████████████████████████████████████████  90  ← peak
+Mar 05: ████████████████████████████████████  36
+Mar 06: ██████████████████████████████████████████████████  50
+Mar 07: ████████████████████████████████████████  40
+Mar 08: ███████████████████████████████████████████████████████████  59
+Mar 09: █████████████████████████████████████████████  45
+Mar 10: █████████████████  17  ← trough
+Mar 11: ██████████████████████████████████████████████████████  54
+Mar 12: ██████████  10  (partial day)
+
+What this shows: 616 visible contributions across 15 days, averaging 41/day — well below the >1000/day target. However, 523 restricted contributions are invisible here, meaning the true total is ~1,139 for the window (~76/day including restricted). The peak day (Mar 4, 90) correlates with the main-app onboarding feature burst. Mar 10 trough (17) follows a high-output weekend, suggesting recovery. The shape is mostly steady with no multi-day gaps — work happened every single day including weekends.
+
+Caveat: Mar 12 is partial (only morning). 523 restricted contributions (likely from private org repos) are not decomposable in this analysis.
+
+B. Repo Flow Summary
+
+┌────────────────────────────────────────────────────┬─────┬────────┬────────┬──────┬───────────┬─────────────┐
+│ Repo                                               │ PRs │ Merged │ Closed │ Open │ Med Merge │ Med Commits │
+├────────────────────────────────────────────────────┼─────┼────────┼────────┼──────┼───────────┼─────────────┤
+│ acme-org/main-app                              │  59 │   43   │   13   │   3  │   29min   │    3.0      │
+│ teammate/podcast-to-book                      │  22 │   19   │    3   │   0  │   10min   │    2.5      │
+│ acme-dev/health-newsfeed                │  11 │    9   │    1   │   1  │   13min   │    3.0      │
+│ acme-org/docs-site                               │   4 │    4   │    0   │   0  │    4min   │    1.5      │
+│ acme-dev/therapy-app         │   2 │    1   │    0   │   1  │   27min   │    1.0      │
+│ acme-dev/yt-transcripts                   │   1 │    1   │    0   │   0  │   98min   │    8.0      │
+│ acme-dev/symphony                                   │   1 │    1   │    0   │   0  │ 3017min   │    1.0      │
+└────────────────────────────────────────────────────┴─────┴────────┴────────┴──────┴───────────┴─────────────┘
+
+What this shows: acme-org/main-app dominates at 59 PRs — it's the main focus. But it also has 13 closed-unmerged PRs, a 22% abandonment rate. That's a significant recutting tax. podcast-to-book flows cleanly (19/22 merged, 10min median merge). docs-site is all docs/config PRs merging in under 5min — clean administrative flow. The 3017min merge on symphony is a stale PR that sat for days, not active drag.
+
+C. PR Size Summary
+
+┌────────────────────────────────────────────────────┬──────────────┬─────────┬─────────┬──────────┐
+│ Repo                                               │ Med Files/PR │ Med +LOC│ Med -LOC│ Med Churn│
+├────────────────────────────────────────────────────┼──────────────┼─────────┼─────────┼──────────┤
+│ acme-org/main-app                              │     9.0      │   183   │    27   │   253    │
+│ teammate/podcast-to-book                      │     6.0      │   276   │    91   │   405    │
+│ acme-dev/health-newsfeed                │     6.0      │   300   │     0   │   300    │
+│ acme-org/docs-site                               │     1.5      │  4944   │     0   │  4944    │
+└────────────────────────────────────────────────────┴──────────────┴─────────┴─────────┴──────────┘
+
+What this shows: main-app PRs touch a median of 9 files with 183 added lines — substantial but not massive. The closed-unmerged PRs are typically larger (avg 15.5 files) — the big ones are more likely to get abandoned. docs-site's huge median +LOC is docs dumps (README rewrites). podcast-to-book has healthy deletion numbers (med 91 -LOC), suggesting active pruning/refactoring rather than just additive growth.
+
+D. Repo Commit Rhythm
+
+┌────────────────────────────────────────────────────┬────────────────┬────────────────┬─────────────┬────────────────┐
+│ Repo                                               │ Commits Landed │ Med Gap Commit │ P90 Gap     │ Longest Gap    │
+├────────────────────────────────────────────────────┼────────────────┼────────────────┼─────────────┼────────────────┤
+│ acme-org/main-app                              │      120       │     14min      │    618min   │   3164min      │
+│ teammate/podcast-to-book                      │       72       │      7min      │    384min   │   2908min      │
+│ acme-dev/health-newsfeed                │       24       │     13min      │    411min   │   1392min      │
+└────────────────────────────────────────────────────┴────────────────┴────────────────┴─────────────┴────────────────┘
+
+What this shows: When you're working on a repo, commits land fast — 7-14min median gaps. But the P90 gaps (384-618min, i.e., 6-10 hours) and longest gaps (2-3 days) reveal a bursty pattern: intense sessions of rapid commits, then the repo goes quiet for half a day to two days. The main-app repo's longest gap of 3164min (~53 hours) lines up with the context-switch to podcast-to-book on Mar 3-7 before returning to main-app on Mar 7-11.
+
+---
+Part 2: Written Analysis
+
+E. Main Patterns
+
+1. "Recut onboarding" — Serial exploration via throwaway PRs
+
+The main-app repo's 13 closed-unmerged PRs are overwhelmingly concentrated in the onboarding feature (Mar 3-9). PRs #58, #60, #64, #68, #71 were all feature attempts at the onboarding flow — each opened, explored, then closed as the approach was revised. These 13 PRs represent ~9,074 added lines that never shipped. The pattern looks like "thinking by PRing" — using PRs as exploratory prototypes rather than shippable increments.
+
+Best interpretation: The onboarding feature's requirements were being discovered during implementation, causing serial rework. The approach stabilized around Mar 9-11 when PRs #104 and #103 were closed and their content re-emerged in cleaner merged PRs.
+
+2. "Tight fix loop" — Sub-minute to single-digit merges on known problems
+
+When the problem is well-understood, merge velocity is extreme. PRs #92 (0min), #91 (1min), #95 (1min) show fixes that were created and merged almost instantly — the diagnosis was done before the PR was opened. This is the ideal agentic workflow: agent produces a scoped fix, you merge immediately.
+
+Best interpretation: Small, scoped, well-defined fixes flow fastest. The bottleneck is never the coding or merging — it's the problem definition.
+
+3. "Multi-repo context switching" — Alternating attention across 7 repos
+
+Work spread across 7 repos in 15 days: main-app (primary), podcast-to-book (burst Mar 3-7), health-newsfeed (burst Mar 9-11), docs-site (spot docs), plus three single-PR repos. The longest commit gaps in each repo correspond to when attention was elsewhere. The main-app repo went quiet for ~53 hours while podcast-to-book had its most intense session.
+
+Best interpretation: You're running multiple projects in round-robin. This is fine for unblocked work but creates cold-start overhead each time you return to a repo. The onboarding recut pattern in main-app may be partly explained by context being lost across switches.
+
+4. "Clean greenfield flow" — New repos flow without friction
+
+health-newsfeed (11 PRs, 9 merged, 13min median merge) and podcast-to-book (22 PRs, 19 merged, 10min median merge) both show clean flow. These are newer/smaller repos where the codebase is simpler and there's no legacy to navigate around. The deletion ratios in podcast-to-book suggest active refactoring as the shape solidified.
+
+Best interpretation: Greenfield repos with clear scope naturally produce better PR flow metrics. The challenge is maintaining this flow as the codebase grows — which is what main-app's onboarding struggle illustrates.
+
+5. "Docs as leverage" — Docs PRs in docs-site establish conventions
+
+PRs #273 (testing philosophy), #274 (PR coverage requirements), #281 (README rewrite) are all docs/process PRs that shipped fast (4min median). These are low-effort but set guardrails for future agent-driven work — a form of meta-engineering leverage.
+
+Best interpretation: Investing in docs that shape agent behavior (like AGENTS.md conventions) has compounding returns. These small PRs may be among the highest-leverage contributions.
+
+F. Annotated Examples
+
+1. The Onboarding Recut Cluster (main-app #58 → #64 → #68 → #71 → #104)
+- PRs: #58 (41 files, +1863/-94), #64 (40 files, +1833/-51), #68 (18 files, +613/-7), #71 (14 files, +1349/-127), #104 (17 files, +1465/-150)
+- What happened: Five successive attempts at the onboarding feature, each closed as the approach was revised. The first four were all closed-unmerged. #104 was also closed but its content appears to have been folded into the final merged versions. Total discarded: ~5,000+ LOC.
+- Cycle: Mar 3 → Mar 9 (6 days of exploration)
+- Read: drag — the feature was important but the serial exploration generated massive throwaway work. A lighter spike/prototype phase before full PRs would have reduced the waste.
+
+2. The Clean Fix Burst (main-app #90-#95, Mar 7-8)
+- PRs: #90, #91, #92, #93, #95
+- What happened: A rapid burst of small fixes (1-9 files each) merged in 0-10 minutes. Each PR addressed a specific UX or data issue.
+- Cycle: <10min each
+- Read: leverage — this is the ideal agent-driven pattern. Small scope, clear problem, immediate merge. Five PRs landed in less time than one recut PR took to explore.
+
+3. The podcast-to-book Sprint (Mar 3-7)
+- PRs: #1 through #13, 22 PRs total
+- What happened: An entire project scaffolded in 5 days with 72 commits landing on main. 19/22 PRs merged, 10min median merge. The 3 closed-unmerged were docs/architecture explorations, not failed feature attempts.
+- Read: leverage — clean greenfield execution with tight feedback loops. The docs PRs that were closed were genuine exploration documents, not wasted code.
+
+4. The Concierge Recut (main-app #79)
+- PR: #79 (15 files, +829/-175, 6 commits)
+- What happened: Created Mar 6, closed Mar 7. A significant feature PR (concierge booking flow) that was explored and abandoned. The 829 lines added were presumably rearchitected into later PRs.
+- Cycle: ~24 hours open before closing
+- Read: drag — large PR that was a seam-exploration attempt. The time invested in 6 commits and 15 files was lost.
+
+5. The Report Lifecycle Fix Chain (main-app #72-#76)
+- PRs: #72 (merged, 12 files), #73 (closed), #74 (merged after 1083min), #76 (merged after 972min)
+- What happened: A cluster of related report-lifecycle fixes. #73 was closed and re-done. #74 and #76 took 16-18 hours to merge — not because of review, but likely because they were opened and then work shifted elsewhere before merging.
+- Read: neutral — the work was necessary but the long merge times suggest context-switching away before closing the loop.
+
+G. Diagnosis
+
+What seems to help:
+- Small, scoped fix PRs merge in under 10 minutes — PRs #90-95 demonstrate that when the problem is well-defined, the entire PR lifecycle is nearly instant.
+- Greenfield repos have near-zero friction — podcast-to-book (10min median merge, 86% merge rate) shows what flow looks like without legacy complexity.
+- Docs PRs that shape agent conventions compound — docs-site process docs shipped in 4min and set guardrails for all future work.
+- Continuous daily cadence with no zero-days — every single day had contributions, preventing multi-day stalls.
+
+What seems to slow you down:
+- Using PRs as exploration vehicles for unclear features — the 13 closed-unmerged main-app PRs represent ~9,000 LOC of throwaway work and ~6 days of serial exploration.
+- Large multi-file PRs (15+ files) have much higher abandonment rates — the closed-unmerged PRs averaged 15.5 files vs merged PRs at 9 median files.
+- Context-switching between repos creates 10-50 hour gaps — the main-app repo's longest gap (53 hours) correlates with the podcast-to-book sprint.
+- Long-lived open PRs that drift — PRs #65, #74, #76 merged after 16-18+ hours, suggesting they were opened then forgotten before eventually being merged.
+
+Current best interpretation: The biggest drag in this window was using full PRs as the exploration medium for the main-app onboarding feature. When you know what to build, your flow is excellent (sub-10-minute merges, continuous commit streams). When you don't know what to build, you still default to opening PRs with hundreds of lines, which creates expensive throwaway work. The gap isn't execution speed — it's the cost of exploration being conducted at the wrong fidelity. A 30-minute design spike in a scratchpad or branch without a PR would have been cheaper than five 1000+ LOC PRs that got closed.
+
+H. What Could Happen Better
+
+Current failure mode: When a feature's requirements are unclear (like main-app's onboarding flow), the workflow defaults to "open a PR, build it, realize the approach is wrong, close the PR, open a new one." This creates serial 1000+ LOC throwaway PRs. The cost isn't just the discarded code — it's the context-loading overhead of each new attempt, the growing complexity of the codebase with half-integrated code, and the opportunity cost of the days spent exploring.
+
+Recommended target workflow: Before opening a PR for any feature touching 10+ files or with unclear requirements, spend 30-60 minutes on a design spike. This could be a scratchpad document, a throwaway branch with pseudocode, or even just a markdown outline of the data model and component structure. The goal is to identify the seam — where the new feature cuts into the existing codebase — before committing to a full implementation. In main-app specifically, the onboarding flow touched auth routing, questionnaires, booking handoff, and data models simultaneously. A spike that mapped those four integration points first would have narrowed the solution space before any code was written.
+
+For the multi-repo context switching: consider batching repo-focused sessions more deliberately. The main-app → podcast-to-book → main-app pattern created 53-hour gaps. If podcast-to-book work was concentrated in one 2-day block rather than interleaved, the main-app context wouldn't have gone cold.
+
+I. Practices to Work On This Week
+
+1. "Spike before PR" rule for uncertain features: Any feature that will touch >10 files or where you're unsure about the data model gets a 30-minute design spike first (markdown outline, not code). The onboarding recut cluster (#58-#104) is the evidence — five serial PRs could have been one if the seam had been identified upfront.
+2. Close the loop before switching repos: When you have open PRs or recently-merged work in a repo, finish the follow-up fixes before context-switching. PRs #74 and #76 sat for 16+ hours because attention shifted. Set a "merge or close everything in this repo" checkpoint before jumping to the next project.
+3. PR size gate at 15 files: The closed-unmerged PRs averaged 15.5 files. Before opening a PR that will touch 15+ files, split it. The clean fix burst (#90-95) averaged 3 files and merged in under 10 minutes. More, smaller PRs > fewer, larger ones.
+4. Track the recut ratio weekly: This window had a 17% close-without-merge rate (17/100). Aiming for <10% would force earlier exploration and tighter scoping. The number itself is the diagnostic — if it creeps up, exploration is happening at the wrong layer.
