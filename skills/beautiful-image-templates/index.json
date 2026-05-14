@@ -1,0 +1,97 @@
+{
+  "name": "beautiful-image-templates",
+  "description": "Reusable prompt templates for polished image generation, concept maps, editorial visuals, and expert-interview knowledge images.",
+  "sourceReference": "references/midjourney-style-types.md",
+  "templates": [
+    {
+      "id": "scientific-handout",
+      "path": "templates/scientific-handout.md",
+      "bestFor": ["mechanisms", "causal chains", "technical education", "expert explanation"],
+      "structure": "labeled mechanism diagram",
+      "density": "medium",
+      "mood": ["clear", "educational", "precise"],
+      "styleTerms": ["analytic drawing", "infographic drawing", "diagrammatic drawing", "high key lighting", "white background"]
+    },
+    {
+      "id": "philosophical-field-map",
+      "path": "templates/philosophical-field-map.md",
+      "bestFor": ["assumptions", "tensions", "conceptual terrain", "opposing forces"],
+      "structure": "field map with axes and regions",
+      "density": "medium",
+      "mood": ["quiet", "intellectual", "analytical"],
+      "styleTerms": ["blueprint", "monotone", "fine linework", "paper", "ambient light"]
+    },
+    {
+      "id": "decision-atlas",
+      "path": "templates/decision-atlas.md",
+      "bestFor": ["reader navigation", "skim versus dive decisions", "route options", "podcast maps"],
+      "structure": "atlas with terrain, legend, and signal markers",
+      "density": "medium-high",
+      "mood": ["neutral", "exploratory", "useful"],
+      "styleTerms": ["map legend", "top view", "matte paper", "low-purity color", "precise labels"]
+    },
+    {
+      "id": "architectural-section",
+      "path": "templates/architectural-section.md",
+      "bestFor": ["layered concepts", "foundations", "hierarchies", "systems with levels"],
+      "structure": "cross-section diagram",
+      "density": "medium",
+      "mood": ["structured", "technical", "grounded"],
+      "styleTerms": ["architectural", "blueprint", "cross-section", "matte", "side view"]
+    },
+    {
+      "id": "museum-wall-chart",
+      "path": "templates/museum-wall-chart.md",
+      "bestFor": ["lineage", "history", "branching ideas", "intellectual inheritance"],
+      "structure": "gallery timeline wall",
+      "density": "medium",
+      "mood": ["archival", "scholarly", "restrained"],
+      "styleTerms": ["old photograph", "archival labels", "warm gallery lighting", "paper", "serif typography"]
+    },
+    {
+      "id": "systems-biology-diagram",
+      "path": "templates/systems-biology-diagram.md",
+      "bestFor": ["feedback loops", "inputs and outputs", "interactions", "complex adaptive systems"],
+      "structure": "biological pathway diagram",
+      "density": "high",
+      "mood": ["technical", "clean", "systemic"],
+      "styleTerms": ["molecular", "cellular diagram", "feedback loops", "flat scientific icon system", "high legibility"]
+    },
+    {
+      "id": "ink-constellation",
+      "path": "templates/ink-constellation.md",
+      "bestFor": ["associative idea maps", "themes", "quiet relationships", "literary or philosophical subjects"],
+      "structure": "central thesis with satellite ideas",
+      "density": "low-medium",
+      "mood": ["minimal", "meditative", "elegant"],
+      "styleTerms": ["Japanese ink", "constellation map", "generous blank space", "paper", "quiet annotations"]
+    },
+    {
+      "id": "risograph-knowledge-poster",
+      "path": "templates/risograph-knowledge-poster.md",
+      "bestFor": ["editorial posters", "public-facing explainers", "energetic summaries", "visual essays"],
+      "structure": "poster with blocks, hierarchy, and diagram fragments",
+      "density": "medium-high",
+      "mood": ["alive", "editorial", "tactile"],
+      "styleTerms": ["risograph", "two-color overprint", "paper", "imperfect registration", "clear text hierarchy"]
+    },
+    {
+      "id": "forensic-evidence-board",
+      "path": "templates/forensic-evidence-board.md",
+      "bestFor": ["claims and evidence", "case studies", "investigations", "pattern finding"],
+      "structure": "evidence board with clusters and connections",
+      "density": "high",
+      "mood": ["investigative", "grounded", "unsensational"],
+      "styleTerms": ["old photograph", "annotated evidence board", "muted color", "pins", "threads"]
+    },
+    {
+      "id": "photographic-archive",
+      "path": "templates/photographic-archive.md",
+      "bestFor": ["specific people", "places", "objects", "historical subjects", "brand or product presence"],
+      "structure": "archival photograph with restrained annotation",
+      "density": "low-medium",
+      "mood": ["material", "credible", "observational"],
+      "styleTerms": ["old photograph", "natural lighting", "film style", "paper", "wide view"]
+    }
+  ]
+}

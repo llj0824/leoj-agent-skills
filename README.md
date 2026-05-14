@@ -21,6 +21,16 @@ leoj-agent-skills/
 │   │   │   ├── agentic-engineering-github-tape-review-output.tape
 │   │   │   └── agentic-engineering-github-tape-review-output.txt
 │   │   └── SKILL.md
+│   ├── beautiful-image-templates/
+│   │   ├── agents/
+│   │   │   └── openai.yaml
+│   │   ├── references/
+│   │   │   └── midjourney-style-types.md
+│   │   ├── templates/
+│   │   │   └── *.md
+│   │   ├── AGENTS.md
+│   │   ├── index.json
+│   │   └── SKILL.md
 │   ├── cloudflare-deploy-html/
 │   │   ├── agents/
 │   │   │   └── openai.yaml
@@ -80,6 +90,7 @@ For example:
 
 ```bash
 npx skills add llj0824/leoj-agent-skills --skill deep-dive-html
+npx skills add llj0824/leoj-agent-skills --skill beautiful-image-templates
 npx skills add llj0824/leoj-agent-skills --skill review-pr
 npx skills add llj0824/leoj-agent-skills --skill pr-video-review
 npx skills add llj0824/leoj-agent-skills --skill investigate-and-implement
@@ -96,6 +107,7 @@ Or use a direct GitHub tree URL to install a specific skill subdirectory:
 
 ```bash
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/deep-dive-html
+npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/beautiful-image-templates
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/review-pr
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/pr-video-review
 npx skills add https://github.com/llj0824/leoj-agent-skills/tree/main/skills/investigate-and-implement
@@ -117,6 +129,7 @@ npx skills add llj0824/leoj-agent-skills --list
 | Skill | Description |
 | --- | --- |
 | `deep-dive-html` | Polished standalone HTML deep-dive explainers with inline SVG diagrams, dark mode, and print styles. Thesis-first, visual budget, calmer defaults. |
+| `beautiful-image-templates` | Choose and adapt polished image prompt templates using a Midjourney-derived style vocabulary for concept maps, editorial visuals, and generated images. |
 | `review-pr` | Review a GitHub PR for mergeability, risk, missing tests, and code smells. Produces a severity-ranked verdict (MERGE / BLOCK / NEEDS CHANGES). |
 | `investigate-and-implement` | Understand task intent, investigate the current state deeply, rank options when needed, implement the recommended path, verify it, open a PR, and clean up the task worktree after merge. |
 | `task-deep-dive-implementation` | Legacy compatibility alias for `investigate-and-implement`. |

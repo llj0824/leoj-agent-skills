@@ -7,6 +7,7 @@
 ├── skills/
 │   ├── agentic-engineering-codex-tape-review/   deliberate-practice feedback loop from Codex session logs
 │   ├── agentic-engineering-github-tape-review/  deliberate-practice feedback loop from GitHub activity
+│   ├── beautiful-image-templates/                polished image prompt templates and style vocabulary
 │   ├── cloudflare-deploy-html/                  publish HTML artifacts to Cloudflare Pages subpaths
 │   ├── eval-agent-skills/                       design and run lightweight evals for Codex skills
 │   ├── pr-video-review/                         reviewer-facing motion clips for GitHub PR descriptions

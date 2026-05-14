@@ -1,0 +1,4 @@
+interface:
+  display_name: "Beautiful Image Templates"
+  short_description: "Choose and adapt polished image prompt templates"
+  default_prompt: "Use $beautiful-image-templates to choose a visual template, draft three prompt directions, and generate or return the final image prompt."
