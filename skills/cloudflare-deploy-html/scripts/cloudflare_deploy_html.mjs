@@ -1,8 +1,17 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+
+const LEO_ARTIFACTS_PROJECT = "leo-jiang-artifacts";
+const LEO_ARTIFACTS_STATE_DIR = path.join(
+  os.homedir(),
+  "Desktop",
+  "workspace",
+  "leo-jiang-artifacts-site",
+);
 
 function parseArgs(argv) {
   const [command = "help", ...rest] = argv;
@@ -39,12 +48,14 @@ Usage:
   node scripts/cloudflare_deploy_html.mjs whoami
   node scripts/cloudflare_deploy_html.mjs publish --source <file-or-dir> --subpath <path> [--protected] [--deploy] [--project <name>] [--state-dir <dir>]
   node scripts/cloudflare_deploy_html.mjs remove --subpath <path> [--deploy] [--project <name>] [--state-dir <dir>]
-  node scripts/cloudflare_deploy_html.mjs list [--state-dir <dir>]
+  node scripts/cloudflare_deploy_html.mjs list [--project <name>] [--state-dir <dir>]
   node scripts/cloudflare_deploy_html.mjs deploy --project <name> [--state-dir <dir>]
   node scripts/cloudflare_deploy_html.mjs set-password --project <name> --value <password>
 
 Notes:
-  - Default local state dir: .cloudflare-deploy-html
+  - Default state dir for leo-jiang-artifacts: ${LEO_ARTIFACTS_STATE_DIR}
+  - Default state dir for other projects: .cloudflare-deploy-html
+  - Override with --state-dir or CLOUDFLARE_DEPLOY_HTML_STATE_DIR
   - Protected artifacts use HTTP Basic Auth with username "artifact"
   - Protected artifacts require the Cloudflare Pages secret ARTIFACT_SHARED_PASSWORD`);
 }
@@ -53,8 +64,20 @@ function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-function resolveStateDir(raw) {
-  return path.resolve(raw ?? path.join(process.cwd(), ".cloudflare-deploy-html"));
+function resolveStateDir(raw, args = {}) {
+  if (raw) {
+    return path.resolve(raw);
+  }
+
+  if (process.env.CLOUDFLARE_DEPLOY_HTML_STATE_DIR) {
+    return path.resolve(process.env.CLOUDFLARE_DEPLOY_HTML_STATE_DIR);
+  }
+
+  if (resolveProjectName(args) === LEO_ARTIFACTS_PROJECT) {
+    return LEO_ARTIFACTS_STATE_DIR;
+  }
+
+  return path.resolve(path.join(process.cwd(), ".cloudflare-deploy-html"));
 }
 
 function getPaths(stateDir) {
@@ -451,7 +474,7 @@ function main() {
     return;
   }
 
-  const paths = getPaths(resolveStateDir(args["state-dir"]));
+  const paths = getPaths(resolveStateDir(args["state-dir"], args));
   const manifest = loadManifest(paths);
 
   switch (args.command) {

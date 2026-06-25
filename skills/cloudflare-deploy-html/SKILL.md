@@ -65,6 +65,14 @@ node scripts/cloudflare_deploy_html.mjs set-password \
 
 This skill assumes the target Pages project already exists. If not, create it first in the Cloudflare dashboard.
 
+For Leo's main artifact host, always use the existing `leo-jiang-artifacts` project. The helper defaults that project to the canonical state directory:
+
+```text
+~/Desktop/workspace/leo-jiang-artifacts-site
+```
+
+That directory is the durable source of truth for `artifacts.leo-jiang.com`: it contains the generated `site/` tree and `manifest.json`. Do not deploy `leo-jiang-artifacts` from a cwd-local `.cloudflare-deploy-html/` folder unless the user explicitly asks for a one-off override, because Cloudflare Pages deployments replace the whole site snapshot.
+
 Use `whoami` before deploying so you fail fast on auth:
 
 ```bash
@@ -115,8 +123,9 @@ node scripts/cloudflare_deploy_html.mjs remove \
 
 ## Important Notes
 
-- The script keeps generated deploy state in `.cloudflare-deploy-html/` in the current working directory by default.
-- Treat that directory as generated output. Keep it untracked unless the user explicitly wants it committed.
+- For `leo-jiang-artifacts`, the script keeps generated deploy state in `~/Desktop/workspace/leo-jiang-artifacts-site` by default, regardless of the current working directory.
+- For other projects, the script keeps generated deploy state in `.cloudflare-deploy-html/` in the current working directory by default.
+- Treat generated state directories as deploy sources. Do not delete them casually; redeploying from an empty state directory removes previously published artifact paths.
 - If the user wants `example.com/{subpath}`, the apex domain must be on Cloudflare nameservers. For a plain subdomain like `reports.example.com`, a DNS CNAME can be enough.
 - If you want the Cloudflare `*.pages.dev` hostname hidden, redirect it to the custom domain after the deployment is live.
 
